@@ -1,3 +1,12 @@
+```bash
+gh repo list start-upps --limit 10000 --json name,visibility \
+  --jq '.[] | select(.visibility!="private") | .name' \
+  | while IFS= read -r repo; do
+      gh repo edit "start-upps/$repo" --visibility private --accept-visibility-change-consequences \
+        && echo "OK: $repo" || echo "FAILED: $repo"
+    done
+```
+
 # Make Organization Repositories Private
 
 A safe, auditable, and configurable toolset (Bash script + usage patterns) to change the visibility of all repositories in a GitHub organization to **private**. This repository contains a production-ready Bash script with safety checks, filters, dry-run support, logging and a summary report — intended for organization administrators who need to migrate multiple repositories to private visibility.
